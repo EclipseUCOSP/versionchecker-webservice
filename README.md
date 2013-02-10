@@ -11,20 +11,22 @@ each time we push/pull.
 The database files are handled in cakephp-2.2.7/app/config/database.php
 It should look like this:
 
-public $default = array(
-  'datasource' => 'Database/Mysql',
-  'persistent' => false,
-	'host' => 'localhost:3306',
-	'login' => 'root',
-	'password' => 'root',
-	'database' => 'versiondb',
-	'prefix' => '',
-	'encoding' => 'utf8',
-);
+	public $default = array(
+		'datasource' => 'Database/Mysql',
+		'persistent' => false,
+		'host' => 'localhost:3306',
+		'login' => 'root',
+		'password' => 'root',
+		'database' => 'versiondb',
+		'prefix' => '',
+		'encoding' => 'utf8',
+	);
   
   
-To work with W/M/L-AMP the password and username are just root
-Make sure your AMP stack setup is on port 3306
-and make a db called version db
+To work with W/M/L-AMP the password and username are just root.
 
-To set up your table, use the SQL commands in the db repository
+Make sure your AMP stack setup is on port 3306.
+
+and make a db called version db.
+
+To set up your table, use the SQL commands in the db repository.
