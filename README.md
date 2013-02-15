@@ -17,7 +17,7 @@ It should look like this:
 		'host' => 'localhost:3306',
 		'login' => 'root',
 		'password' => 'root',
-		'database' => 'versiondb',
+		'database' => 'eclipse',
 		'prefix' => '',
 		'encoding' => 'utf8',
 	);
