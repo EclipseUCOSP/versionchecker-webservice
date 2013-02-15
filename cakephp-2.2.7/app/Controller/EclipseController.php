@@ -1,7 +1,6 @@
 
 <?php
 class EclipseController extends AppController{
-	public $helpers = array('Html', 'Form');
 	
 	protected static $_messages = array(
 		JSON_ERROR_DEPTH => 'The maximum stack depth has been exceeded',
@@ -12,18 +11,16 @@ class EclipseController extends AppController{
 	
 	
 	
-	if ($this->request->isPost()){
-		$JSON = $this->request->input ( 'json_decode', true) ;
-		throw new RuntimeException(static::$_messages[json_last_error()]);
-	}
-	
-	
 	public function Query($JSON){
-		$this->set('Eclipse', $JSON);
+		if ($this->request->isPost()){
+			$JSON = $this->request->input( 'json_decode', true) ;
+			throw new RuntimeException(static::$_messages[json_last_error()]);
+			$newJSON = $this->EclipseModel->Query($JSON);
+		}
+		$this->RequestHandler->setContent('json', 'application/json');
+		$newJSON = json_encode($newJSON);
+		$this->set('eclipse', $newJSON);
 		
 	}
-
-
-
 }
 ?>
