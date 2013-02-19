@@ -22,11 +22,12 @@
  */
 
 
-	Router::connect('/', array('controller' => 'eclipse', 'action' => 'query'));
-/**
- * ...and connect the rest of 'Pages' controller's urls.
- */
-#	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+ 
+	Router::connect('/', array('controller' => 'eclipse', 'action' => 'recievePOST'));
+
+	#Router::connect('/eclipse/*', array('controller' => 'eclipse', 'action' => 'queryy'));
+
+
 
 /**
  * Load all plugin routes.  See the CakePlugin documentation on
