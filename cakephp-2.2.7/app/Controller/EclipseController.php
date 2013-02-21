@@ -10,16 +10,26 @@ class EclipseController extends AppController{
 	
 	
 	
-	public function recievePOST($JSON){
+	public function recievePOST(){
 		if ($this->request->isPost()){
-			$JSON = $this->request->input('json_decode', true) ;
-			throw new RuntimeException(static::$_messages[json_last_error()]);
-			$sendJSON = $this->EclipseModel->versioncheck($JSON);
+			# echo "its a post request!\n";
+			$array = array();
+			# recieve 
+			$JSON = $this->request->input('json_decode', true);
+			# open db here so we only have one instance open
+			$con = mysql_connect("localhost:3306","root","root");
+			foreach( $JSON as $obj ){
+				# test prints
+				# echo $obj['name'];
+				# echo "\n";
+				# echo $obj['version'];
+				$array[] = $this->Eclipse->versioncheck($obj['name'],$obj['version'],$con);
+				#$array[] = $sendJSON;
+			}
+			mysql_close($con);
+			$this->set('sendJSON', $array);
 		}
-		$this->RequestHandler->setContent('json', 'application/json');
-		$this->set('sendJSON', $sendJSON);
 		$this->render('/Eclipse/SerializeJson/');
-		
 	}
 }
 ?>
