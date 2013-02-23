@@ -11,6 +11,7 @@ class EclipseController extends AppController{
 	
 	
 	public function recievePOST(){
+		$array = array();
 		if ($this->request->isPost()){
 			# echo "its a post request!\n";
 			$array = array();
@@ -27,8 +28,9 @@ class EclipseController extends AppController{
 				#$array[] = $sendJSON;
 			}
 			mysql_close($con);
-			$this->set('sendJSON', $array);
 		}
+		$this->set('sendJSON', $array);
+		$this->autoLayout = false;
 		$this->render('/Eclipse/SerializeJson/');
 	}
 }
