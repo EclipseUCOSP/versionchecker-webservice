@@ -5,13 +5,15 @@ class Eclipse extends Model {
 
 	public function versionchecker(array $JSON){
 		# echo "got to model";
-		$database='';
-		$hostname='';
-		$username='';
-		$password='';
+		#$database='';
+		#$hostname='';
+		#$username='';
+		#$password='';
+		include('../Config/dbinfo.php');
 		$link = mysql_connect($hostname, $username, $password)
 									or die ("Database Connection Error");
 		mysql_select_db($database, $link) or die ("Connection Error");
+		unset($database,$hostname,$username,$password);
 		#improve this for real db
 		$results = array();
 		foreach($JSON as $obj){
