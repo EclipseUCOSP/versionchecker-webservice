@@ -19,8 +19,6 @@ class EclipseController extends AppController{
 			$array = array();
 			# recieve 
 			$JSON = $this->request->input('json_decode', true);
-			# cleaning the data and makes a string SQL-safe
-			$JSON = Sanitize::escape($JSON);
 			# open db here so we only have one instance open
 			$con = mysql_connect("localhost:3306","root","root");
 			foreach( $JSON as $obj ){
@@ -28,7 +26,10 @@ class EclipseController extends AppController{
 				# echo $obj['name'];
 				# echo "\n";
 				# echo $obj['version'];
-				$array[] = $this->Eclipse->versioncheck($obj['name'],$obj['version'],$con);
+				# cleaning the data and makes a string SQL-safe
+				$nameObj = Sanitize::escape($JSON)($obj['name']);
+				$versionObj = Sanitize::escape($JSON)($obj['version']);
+				$array[] = $this->Eclipse->versioncheck($nameObj,$versionObj,$con);
 				#$array[] = $sendJSON;
 			}
 			mysql_close($con);
