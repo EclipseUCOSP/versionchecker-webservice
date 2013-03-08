@@ -1,5 +1,7 @@
 
 <?php
+App::uses('Sanitize', 'Utility');
+
 class EclipseController extends AppController{
 	
 	protected static $_messages = array(
@@ -17,6 +19,8 @@ class EclipseController extends AppController{
 			$array = array();
 			# recieve 
 			$JSON = $this->request->input('json_decode', true);
+			# cleaning the data and makes a string SQL-safe
+			$JSON = Sanitize::escape($JSON);
 			# open db here so we only have one instance open
 			$con = mysql_connect("localhost:3306","root","root");
 			foreach( $JSON as $obj ){
