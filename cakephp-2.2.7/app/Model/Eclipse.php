@@ -3,7 +3,7 @@
 class Eclipse extends Model {
 
 
-	public function versionchecker(array $JSON){
+	public function versionchecker($JSON){
 		
 		#database credentials
 		include('app/Config/dbinfo.php');
@@ -27,18 +27,18 @@ class Eclipse extends Model {
 					#}else{ 
 						# not up to date
 						#component is unavailable
-						if (strcmp($row['LTS'],"unavailable")==0){
-							$results=array( "component"=> $id,
+						if (strcmp($row['state'],"unavailable")==0){
+							$results[]=array( "component"=> $id,
 											"state"=>"unavailable"
 											);   
 						}else{
 							#component is available or has alternative source
 							# LTS support not implemented
-							$results=array("component"=> $id,
-						       				"state" => $row['LTS'],
+							$results[]=array("component"=> $id,
+						       				"state" => $row['state'],
 						       				"version"=> $row['p2_version'],
-											"repo"=> array(
-														"repoinfo" => $row['git_repo'],
+											"repoinfo"=> array(
+														"repo" => $row['git_repo'],
 	 													"commit" => $row['git_commit'],
 														"branch" => $row['git_branch']
 															)	

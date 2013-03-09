@@ -12,7 +12,7 @@ class EclipseController extends AppController{
 	public function recievePOST(){
 		$array = array();
 		if ($this->request->isPost()){
-			$JSON[] = $this->request->input('json_decode', true);
+			$JSON = $this->request->input('json_decode',true);
 			$array[] = $this->Eclipse->versionchecker($JSON);
 		}
 		$this->set('sendJSON', $array);
