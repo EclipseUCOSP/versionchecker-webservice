@@ -1,36 +1,54 @@
-
 <?php
 
 class Eclipse extends Model {
 
 
-	public function versioncheck($id,$version,$con){
-		# echo "got to model";
-		mysql_select_db("eclipsedb", $con) or die ("Connection Error");
-		#improve this for real db
-		$entry = mysql_query("SELECT * FROM version");
-		while($row = mysql_fetch_array($entry)){	
- 			if(strcmp($row['id'],$id)==0){
- 				#testing prints ignore for now
- 				#echo $id;
- 				#echo "\n";
-				#echo $row['id'];
-				#up to date
-				if (strcmp($row['p2_version'],$version)==0){
-					$results=array("component"=> $id,
-									"current"=> true
-									);
-				}else{ 
-				# not up to dat
-					$results=array("component"=> $id,
-									"current"=> array("repo" => $row['git_repo'],
-							 		 			 "commit" => $row['git_commit'],												  		"branch" => $row['git_branch']
-													)
-									);
+	public function versionchecker($JSON){
+		
+		#database credentials
+		include('app/Config/dbinfo.php');
+		$link = mysql_connect($hostname, $username, $password)
+									or die ("Database Connection Error");
+		mysql_select_db($database, $link) or die ("Connection Error");
+		#remove db credentials from memory
+		unset($database,$hostname,$username,$password);
+		$results = array();
+		foreach($JSON as $obj){
+			$id = $obj['component'];
+			$version = $obj['version'];
+			$entry = mysql_query("SELECT * FROM version");
+			while($row = mysql_fetch_array($entry)){
+ 				if(strcmp($row['id'],$id)==0){
+ 					#part up to date
+					#if (strcmp($row['p2_version'],$id)==0){
+					#	$results=array("component"=> $obj['name'],
+					#					"current"=> true
+					#					);
+					#}else{ 
+						# not up to date
+						#component is unavailable
+						if (strcmp($row['state'],"unavailable")==0){
+							$results[]=array( "component"=> $id,
+											"state"=>"unavailable"
+											);   
+						}else{
+							#component is available or has alternative source
+							# LTS support not implemented
+							$results[]=array("component"=> $id,
+						       				"state" => $row['state'],
+						       				"version"=> $row['p2_version'],
+											"repoinfo"=> array(
+														"repo" => $row['git_repo'],
+	 													"commit" => $row['git_commit'],
+														"branch" => $row['git_branch']
+															)	
+											);
 					}
 				}
 			}
-			return $results;
 		}
+		mysql_close($link);
+		return $results;
+		}			
 	}
 ?>
