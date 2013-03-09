@@ -37,8 +37,8 @@ class EclipseController extends AppController{
 			$JSON = $this->request->input('json_decode',true);
 			# cleaning the data and makes a string SQL-safe before sending to model
 			foreach( $JSON as $obj ){
-				$idObj = Sanitize::escape($obj['component']);
-				$versionObj = Sanitize::escape($obj['version']);
+				$idObj = Sanitize::clean($obj['component'], array('escape' => true));
+				$versionObj = Sanitize::clean($obj['version'], array('escape' => true));
 			}
 			$cleanedData = array();
 			$cleanedData[] = array("component"=> $idObj,
