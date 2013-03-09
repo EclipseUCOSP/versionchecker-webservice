@@ -27,15 +27,23 @@ class EclipseController extends AppController{
 				# echo "\n";
 				# echo $obj['version'];
 				# cleaning the data and makes a string SQL-safe
-				$nameObj = Sanitize::escape($JSON)($obj['name']);
-				$versionObj = Sanitize::escape($JSON)($obj['version']);
+				$nameObj = Sanitize::escape($obj['name']);
+				$versionObj = Sanitize::escape($obj['version']);
 				$array[] = $this->Eclipse->versioncheck($nameObj,$versionObj,$con);
 				#$array[] = $sendJSON;
 			}
 			mysql_close($con);
-=======
+======= 	
 			$JSON = $this->request->input('json_decode',true);
-			$array[] = $this->Eclipse->versionchecker($JSON);
+			# cleaning the data and makes a string SQL-safe before sending to model
+			foreach( $JSON as $obj ){
+				$idObj = Sanitize::escape($obj['component']);
+				$versionObj = Sanitize::escape($obj['version']);
+			}
+			$cleanedData = array();
+			$cleanedData[] = array("component"=> $idObj,
+									"version"=> $versionObj); 
+			$array[] = $this->Eclipse->versionchecker($cleanedData);
 >>>>>>> origin/mvcbranch
 		}
 		$this->set('sendJSON', $array);
