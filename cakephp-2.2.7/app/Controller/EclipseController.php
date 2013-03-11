@@ -1,5 +1,5 @@
 <?php
-App::uses('Sanitize', 'Utility');
+#App::uses('Sanitize', 'Utility');
 
 class EclipseController extends AppController{
 
@@ -10,11 +10,13 @@ class EclipseController extends AppController{
       #   );
 
 
-
+/*
+THIS IS WHAT WE ARE WORKING ON FOR INPUT SANITIZATION, STILL HAVING AN ERROR
+SO I INCLUDED THE WORKING VERSION ATT HE BOTTOM
 	public function recievePOST(){
 		$array = array();
 		if ($this->request->isPost()){
-<<<<<<< HEAD
+
 			# echo "its a post request!\n";
 			$array = array();
 			# recieve 
@@ -22,10 +24,6 @@ class EclipseController extends AppController{
 			# open db here so we only have one instance open
 			$con = mysql_connect("localhost:3306","root","root");
 			foreach( $JSON as $obj ){
-				# test prints
-				# echo $obj['name'];
-				# echo "\n";
-				# echo $obj['version'];
 				# cleaning the data and makes a string SQL-safe
 				$nameObj = Sanitize::escape($obj['name']);
 				$versionObj = Sanitize::escape($obj['version']);
@@ -33,7 +31,7 @@ class EclipseController extends AppController{
 				#$array[] = $sendJSON;
 			}
 			mysql_close($con);
-======= 	
+
 			$JSON = $this->request->input('json_decode',true);
 			# cleaning the data and makes a string SQL-safe before sending to model
 			foreach( $JSON as $obj ){
@@ -44,11 +42,26 @@ class EclipseController extends AppController{
 			$cleanedData[] = array("component"=> $idObj,
 									"version"=> $versionObj); 
 			$array[] = $this->Eclipse->versionchecker($cleanedData);
->>>>>>> origin/mvcbranch
+
 		}
 		$this->set('sendJSON', $array);
 		$this->autoLayout = false;
 		$this->render('/Eclipse/SerializeJson/');
 	}
+	*/
+
+
+	public function recievePOST(){
+		$array = array();
+		if ($this->request->isPost()){
+			$JSON = $this->request->input('json_decode',true);
+			$array[] = $this->Eclipse->versionchecker($JSON);
+		}
+		$this->set('sendJSON', $array);
+		$this->autoLayout = false;
+		$this->render('/Eclipse/SerializeJson/');
+	}
+
+
 }
 ?>
