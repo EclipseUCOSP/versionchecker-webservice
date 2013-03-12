@@ -51,15 +51,19 @@ SO I INCLUDED THE WORKING VERSION ATT HE BOTTOM
 	*/
 
 
+	
 	public function recievePOST(){
-		$array = array();
 		if ($this->request->isPost()){
+			$array = array();
 			$JSON = $this->request->input('json_decode',true);
 			$array[] = $this->Eclipse->versionchecker($JSON);
+			$this->set('sendJSON', $array);
+			$this->autoLayout = false;
+			$this->render('/Eclipse/SerializeJson/');
+		}else{
+			$this->autoLayout = false;
+			$this->render('/Eclipse/Instructions/');
 		}
-		$this->set('sendJSON', $array);
-		$this->autoLayout = false;
-		$this->render('/Eclipse/SerializeJson/');
 	}
 
 

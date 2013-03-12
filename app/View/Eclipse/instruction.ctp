@@ -1,17 +1,30 @@
-<?php
-// app/View/Eclipse/instruction.ctp
-$this->extend('/Common/view');
-?>
-
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
 <title>Version-Checker Webservice</title>
-<h1>
-	How the webservice works:
-</h1>
-
+<meta name="author" content="Eclipse Foundation, Inc." />
+<link rel="stylesheet" type="text/css"
+    href="/Styles/layout.css"
+    media="screen" />
+<link rel="stylesheet" type="text/css"
+    href="/Styles/visual.css"
+    media="screen" />
+</head>
 <body>
-The webservice takes an input POST request with the form as below:
+	<div id="header">
+        <a href="http://www.eclipse.org/"><img
+            src="/Styles/header_logo.gif"
+            width="163" height="68" border="0" alt="Eclipse Logo"
+            class="logo" />
+        </a>
+    </div>
+<div id="midcolumn">
+<h3>
+How the webservice works:
+</h3>
 
-<code>
+<p>The webservice is built to communicate with the Eclipse Version-Checker plugin. It takes an input POST request of the form similar to below:</p>
+
+<pre><code>
 {
 	{
 	"component":"org.eclipse.jdt.junit",
@@ -22,19 +35,23 @@ The webservice takes an input POST request with the form as below:
 	"version":"3.8.2.v3_8_2_v20120427-1100"
 	}
 }
-</code>
+</code></pre>
 
-You can install a third party library <a href="http://docs.python-requests.org/en/latest/">Requests</a> and run a simple Python script to request POST and recive JSON response from the webservice:
 
-Python scrript for testing:
-<code>
+<h3>Python script for testing:</h3>
+
+<p>If you wish to test it you can install a third party library <a href="http://docs.python-requests.org/en/latest/">Requests</a> and run a simple Python script to request POST and recive JSON response from the webservice:</p>
+
+<pre><code>
 import requests
 import json
 
-jdata = [{"component":"part1", "version":"1"},{"component":"part2", "version":"1"}]
+data = [{"component":"part1", "version":"1"},{"component":"part2", "version":"1"}]
 
 
-r = requests.post("http://build.eclipse.org/cbi/vc/", data=json.dumps(jdata))
+r = requests.post("http://build.eclipse.org/cbi/vc/", data=json.dumps(data))
 print r.json()
-</code>
+</code></pre>
+</div>
 </body>
+</html>

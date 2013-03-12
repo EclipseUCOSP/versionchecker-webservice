@@ -1,0 +1,289 @@
+/* bug fix 118981 */
+/* General Rules */
+body {
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+img { border-width: 0; }
+ul, li { margin: 0; padding: 0; }
+
+.clearer {
+	visibility: hidden;
+	clear: both;
+}
+
+/* Header Rules */
+#header {
+	height: 68px;
+	position: relative;
+}
+#header img {
+	display: block; /* help IE display the logo properly */
+}
+#searchbar {
+	height: 68px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 400px;
+}
+#searchbar .transition {
+	bottom: 0;
+	position: absolute;
+	left: 0;
+}
+#searchbar .header {
+	bottom: 26px;
+	position: absolute;
+	left: 100px;
+}
+#searchbar form {
+	position: absolute;
+	bottom: 3px;
+	left: 120px;
+	margin: 0;
+	padding: 0;
+}
+#searchbar input {
+	border-width: 1px;
+	height: 15px;
+	padding: 0;
+	margin: 0;
+}
+#searchbar input.button {
+	border-width: 0;
+	height: auto;
+	margin: 0 0 -1px 1px;
+	vertical-align: bottom;
+}
+#headernav {
+	top: 10px;
+	right: 10px;
+	position: absolute;
+}
+#headernav li {
+	border-width: 0 0 0 1px;
+	float: left;
+	padding: 0 10px;
+}
+#headernav li.first {
+	border-width: 0;
+}
+
+/* Left Column Rules */
+#leftcol {
+	float: left;
+	width: 140px;
+}
+#leftnav {
+	margin-bottom: 30px;
+	background color: black;
+}
+
+#leftnav li.selected {
+	padding: 8px 0 8px 5px;
+}
+#leftnav a.selected {
+	padding: 0px 0 0px 5px;
+}
+
+#leftnav, #leftnav ul { /* all lists */
+		padding: 0;
+		margin: 0;
+		list-style: none;
+/*		float : left; */
+		width : 11em;
+		margin-bottom: 30px;
+	}
+#leftnav li { /* all list items */
+		position : relative;
+		border-width: 0 0 1px 0;
+		float : left;
+		width: 155px;
+}
+	
+#leftnav li a {
+		width: 140px; 
+		w\idth : 140px;
+		display : block;
+		text-decoration : none;
+		list-style-type: none;
+		padding: 6px 0 6px 15px;
+}
+
+#leftnav li a:hover {
+		/* background-color : black; */
+		list-style-type: none;
+}
+	
+#leftnav li:hover ul ul, #leftnav li:hover ul ul ul, #leftnav li.sfhover ul ul, #leftnav li.sfhover ul ul ul {
+}
+	
+#leftnav li:hover ul, #leftnav li li:hover ul, #leftnav li li li:hover ul, #leftnav li.sfhover ul, #leftnav li li.sfhover ul, #leftnav li li li.sfhover ul { /* lists nested under hovered list items */
+		left: auto;
+		list-style-type: none;
+}
+
+/* Top Navigation Rules */
+#topnav {
+	border-width: 0;
+	height: 2.5em;
+	margin-left: 0px;
+}
+#topnav ul {
+	float: left;
+	height: 2.5em;
+}
+#topnav li {
+	float: left;
+	height: 2.5em;
+}
+
+#topnav a {
+	display: block;
+	line-height: 2.5em;
+	padding: 0 10px;
+}
+#topnavsep {
+	border-width: 1px;
+	height: 2px;
+	margin-left: 0px;
+	width: 100%;
+	line-height: 0;
+	font-size: 0;
+}
+
+
+/* Middle Column Rules cannot have relative position with dynamic menus */
+#midcolumn {
+	float: left;
+	padding-left: 25px;
+	width: 60%;
+	padding-top: 10px;
+}
+
+#midcolumn li {
+	margin-left: 16px;
+}
+
+.midlist {
+	margin: 10px 0 10px 25px;
+}
+
+
+.homeitem {
+/*	position: relative; */
+	border-width: 0 1px;
+	float: left;
+	margin: 10px 0 10px 1%;
+	width: 48%;
+}
+.homeitem h3 {
+	padding: 3px;
+	margin: 0;
+}
+.homeitem ul {
+	margin: 0px 20px;
+
+}
+.homeitem li {
+	margin: 5px 5px;
+	padding: 2px 5px 6px 0px;
+}
+
+
+
+/* NEWS rules */
+.homeitem3col {
+	border-width: 0 1px;
+	float: left;
+	/* margin: 10px 3% 10px 0;  */
+	margin: 10px 3% 10px 1%;
+	width: 97%;
+}
+.homeitem3col h3 {
+	padding: 3px;
+	margin: 0;
+}
+.homeitem3col h4 {
+	margin: 3px;
+}
+.homeitem3col ul {
+	margin: 0px 20px;
+}
+.homeitem3col li {
+	margin: 5px 5px;
+	padding: 2px 5px 6px 0px;
+}
+
+/* Right Column Rules */
+#rightcolumn {
+	top: 0px;
+/*	position: relative; */
+	float: right;
+	margin-right: 3px;
+	width: 15%;
+}
+.sideitem {
+	border-width: 1px 1px;
+	margin: 20px 0;
+}
+.sideitem h6 {
+	margin: 0;
+	padding: 3px;
+}
+.sideitem ul {
+	margin: 10px 2px 10px 10px;
+	padding: 0 0 0 15px;
+}
+.sideitem ol {
+	margin: 10px 2px 10px 10px;
+	padding: 0 0 0 25px;
+}
+.sideitem li {
+	clear: both;
+}
+.sideitem .inset {
+	float: left;
+	margin-right: 3px;
+}
+
+.sideitem p {
+	padding: 0 2px 0 2px;
+}
+
+
+
+/* Footer Rules */
+#footer {
+	border-width: 3px 0 0 0;
+	clear: both;
+	height: 35px;
+	/*	margin-left: 175px;*/
+	margin-left: 0px;
+	position: relative;
+
+}
+#footer p {
+	margin: 10px 20px 0 10px;
+	padding: 0;
+}
+#footernav {
+	float: left;
+	margin: 10px 0 0 0;
+	padding: 0;
+}
+#footernav li {
+	border-width: 0 0 0 1px;
+	float: left;
+	padding: 0 10px;
+}
+#footernav li.first {
+	border-width: 0;
+}
+
+.bold {
+	font-weight: bold;
+}
