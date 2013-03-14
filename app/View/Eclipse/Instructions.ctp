@@ -19,13 +19,16 @@
         </div>
         <div id="midcolumn">
         <h2>
-            Version-Checker Webserive
+            Version-Checker Webservice
         </h2>
+        <p>
+            This webservice is created to fill the gap between version-cheker plugin and version-checker database. It provides JSON data to be consumed by front-end UI. It is not a human readable webpage. In order to test it you can follow the instructions.
+        </p>
         <h3>
             How the webservice works:
         </h3>
         
-            <p>The webservice is built to communicate with the Eclipse Version-Checker plugin. It takes an input POST request of the form similar to below:</p>
+            <p>It is built to communicate with the Eclipse Version-Checker plugin. It takes an input POST request of the form similar to below:</p>
         
         <pre><code><font color="rgb(72,61,139)">
 {
