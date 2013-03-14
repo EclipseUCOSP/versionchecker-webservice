@@ -3,16 +3,16 @@
       <title>Version-Checker Webservice</title>
         <meta name="author" content="Eclipse Foundation, Inc." />
        <link rel="stylesheet" type="text/css"
-             href="Styles/layout.css"
+             href="css/layout.css"
              media="screen" />
         <link rel="stylesheet" type="text/css"
-             href="Styles/visual.css"
+             href="css/visual.css"
              media="screen" />
     </head>
     <body>
        <div id="header">
             <a href="http://www.eclipse.org/"><img
-                src="Styles/header_logo.gif"
+                src="img/header_logo.gif"
                 width="163" height="67" border="0" alt="Eclipse Logo"
                 class="logo" />
             </a>
