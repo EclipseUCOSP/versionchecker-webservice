@@ -23,7 +23,7 @@
 
 
  
-	Router::connect('/', array('controller' => 'eclipse', 'action' => 'recievePOST'));
+	Router::connect('/', array('controller' => 'versions', 'action' => 'recievePOST'));
 
 	#Router::connect('/eclipse/*', array('controller' => 'eclipse', 'action' => 'queryy'));
 
@@ -34,7 +34,7 @@
  * how to customize the loading of plugin routes.
  */
 	CakePlugin::routes();
-
+    Router::mapResources('version');
 /**
  * Load the CakePHP default routes. Only remove this if you do not want to use
  * the built-in default routes.

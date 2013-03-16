@@ -61,11 +61,11 @@ class DATABASE_CONFIG {
 
 	public $default = array(
 		'datasource' => 'Database/Mysql',
-		'persistent' => false,
-		'host' => 'localhost:3306',
-		'login' => 'root',
-		'password' => 'root',
-		'database' => 'eclipse',
+		'persistent' => true,
+		'host' => 'db457838872.db.1and1.com',
+		'login' => 'dbo457838872',
+		'password' => 'eclipse',
+		'database' => 'db457838872',
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
