@@ -71,21 +71,16 @@ SO I INCLUDED THE WORKING VERSION ATT HE BOTTOM
 
 	public function versionchecker($JSON){
 		
-		#database credentials
-		#include('app/Config/dbinfo.php');
-		#$link = mysql_connect($hostname, $username, $password)
-		#							or die ("Database Connection Error");
-		#mysql_select_db($database, $link) or die ("Connection Error");
-		#remove db credentials from memory
-	#	unset($database,$hostname,$username,$password);
+
 		$results = array();
 		foreach($JSON as $obj){
 			$id = $obj['component'];
 			$version = $obj['version'];
-			$row =  $this->Version->find('first', array('conditions' => array('Version.id' => $id)));
-			#while($row = mysql_fetch_array($entry)){
- 			if (!$row){
- 				#if(strcmp($entery['Version']['id'],$id)==0){
+			# will try to implement this later, giving strange problems right now
+			#$row =  $this->Version->find('first', array('conditions' => array('Version.id' => $id)));
+			$rows =  $this->Version->find('all');
+ 			foreach($rows as $entry){
+ 				if(strcmp($entry['Version']['id'],$id)==0){
  					#part up to date
 					#if (strcmp($row['p2_version'],$id)==0){
 					#	$results=array("component"=> $obj['name'],
@@ -94,7 +89,7 @@ SO I INCLUDED THE WORKING VERSION ATT HE BOTTOM
 					#}else{ 
 						# not up to date
 						#component is unavailable
-						if (strcmp($row['Version']['state'],"unavailable")==0){
+						if (strcmp($entry['Version']['state'],"unavailable")==0){
 							$results[]=array( "component"=> $id,
 											"state"=>"unavailable"
 											);   
@@ -102,19 +97,18 @@ SO I INCLUDED THE WORKING VERSION ATT HE BOTTOM
 							#component is available or has alternative source
 							# LTS support not implemented
 							$results[]=array("component"=> $id,
-						       				"state" => $row['Version']['state'],
-						       				"version"=> $row['Version']['p2_version'],
+						       				"state" => $entry['Version']['state'],
+						       				"version"=> $entry['Version']['p2_version'],
 											"repoinfo"=> array(
-														"repo" => $row['Version']['git_repo'],
-	 													"commit" => $row['Version']['git_commit'],
-														"branch" => $row['Version']['git_branch']
+														"repo" => $entry['Version']['git_repo'],
+	 													"commit" => $entry['Version']['git_commit'],
+														"branch" => $entry['Version']['git_branch']
 															)	
 											);
 					}
-				#}
+				}
 			}
 		}
-		#mysql_close($link);
 		return $results;
 		}
 
