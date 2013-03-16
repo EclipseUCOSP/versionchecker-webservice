@@ -15,15 +15,26 @@ class VersionsController extends AppController{
 		if ($this->request->isPost()){
 			#$array = array();
 			$JSON = $this->request->input('json_decode',true);
-			# cleaning the data and makes a string SQL-safe before sending to versioncheck() function
-			foreach( $JSON as $obj ){
-				# cleaning the data and making a SQL-safe string
-				$idObj = Sanitize::escape($obj['component']);
-				$versionObj = Sanitize::escape($obj['version']);
-			}
+			# Cleaning the data and makes a string SQL-safe before sending to versioncheck() function
+			# Method 1: using Sanitize::escape() to only escape SQL injections
+			// foreach( $JSON as $obj ){
+			// 	# cleaning the data and making a SQL-safe string
+			// 	$idObj = Sanitize::escape($obj['component']);
+			// 	$versionObj = Sanitize::escape($obj['version']);
+			// }
+
+			// $cleanedData = array();
+			// $cleanedData[] = array("component"=> $idObj,
+			// 						"version"=> $versionObj);
+
+			# Method 2: using Sanitize::clean() - It is a industrial-strength, multi-purpose cleaner, meant to be used on entire arrays
 			$cleanedData = array();
-			$cleanedData[] = array("component"=> $idObj,
-									"version"=> $versionObj);
+			$cleanedData[] = Sanitize::clean($JSON, array('odd_spaces' => true,
+															'dollar' => true,
+															'carriage' => true,
+															'unicode' => true,
+															'escape' => true,
+															'backslash' => true));
 
 			$array = $this->versionchecker($cleanedData);
 			$this->set('sendJSON', $array);
