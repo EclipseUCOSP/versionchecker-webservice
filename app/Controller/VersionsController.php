@@ -1,5 +1,5 @@
 <?php
-#App::uses('Sanitize', 'Utility');
+App::uses('Sanitize', 'Utility');
 
 class VersionsController extends AppController{
 
@@ -56,7 +56,17 @@ SO I INCLUDED THE WORKING VERSION ATT HE BOTTOM
 		if ($this->request->isPost()){
 			$array = array();
 			$JSON = $this->request->input('json_decode',true);
-			$array[] = $this->versionchecker($JSON);
+			# cleaning the data and makes a string SQL-safe before sending to versioncheck() function
+			foreach( $JSON as $obj ){
+				# cleaning the data and making a SQL-safe string
+				$idObj = Sanitize::escape($obj['component']);
+				$versionObj = Sanitize::escape($obj['version']);
+			}
+			$cleanedData = array();
+			$cleanedData[] = array("component"=> $idObj,
+									"version"=> $versionObj);
+
+			$array[] = $this->versionchecker($cleanedData);
 			$this->set('sendJSON', $array);
 			$this->autoLayout = false;
 			$this->render('/Eclipse/SerializeJson/');
