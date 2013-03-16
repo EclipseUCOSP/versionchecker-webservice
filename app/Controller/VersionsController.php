@@ -29,7 +29,7 @@ class VersionsController extends AppController{
 
 			# Method 2: using Sanitize::clean() - It is a industrial-strength, multi-purpose cleaner, meant to be used on entire arrays
 			$cleanedData = array();
-			$cleanedData[] = Sanitize::clean($JSON, array('odd_spaces' => true,
+			$cleanedData = Sanitize::clean($JSON, array('odd_spaces' => true,
 															'dollar' => true,
 															'carriage' => true,
 															'unicode' => true,
