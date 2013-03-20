@@ -6,7 +6,7 @@ class Eclipse extends Model {
 	public function versionchecker($JSON){
 		
 		#database credentials
-		include('app/Config/dbinfo.php');
+		include('app/Config/database.php');
 		$link = mysql_connect($hostname, $username, $password)
 									or die ("Database Connection Error");
 		mysql_select_db($database, $link) or die ("Connection Error");
