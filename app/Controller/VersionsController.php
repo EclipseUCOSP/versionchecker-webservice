@@ -59,7 +59,7 @@ class VersionsController extends AppController{
 			#$row =  $this->Version->find('first', array('conditions' => array('Version.id' => $id)));
 			$rows =  $this->Version->find('all');
  			foreach($rows as $entry){
- 				if(strcmp($entry['Version']['id'],$id)==0){
+ 				if(strcmp($entry['Version']['project'],$id)==0){
  					#part up to date
 					#if (strcmp($row['p2_version'],$id)==0){
 					#	$results=array("component"=> $obj['name'],
