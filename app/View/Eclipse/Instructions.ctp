@@ -30,19 +30,19 @@
         
             <p>It is built to communicate with the Eclipse Version-Checker plugin. It takes an input POST request of the form similar to below:</p>
         
-        <pre><code><font color="rgb(72,61,139)">
+        <pre><code>
 {
     {
     "component":"org.eclipse.jdt.junit",
     "version":"3.7.100.v20120523-1543"
     },
     {
-    "component":"org.junit",
-    "version":"3.8.2.v3_8_2_v20120427-1100"
+    "component":"org.eclipse.rcp",
+    "version":"4.3.0.v20130318-0959"
     }
 }
 
-        </font></code></pre>
+        </code></pre>
         
         <h3>
             
@@ -54,16 +54,16 @@
         <p>If you wish to test it you can install a third party library <a href="http://docs.python-requests.org/en/latest/">Requests</a> and run a simple Python script to request POST and recive JSON response from the webservice:</p>
 
       
-         <pre><code><font color="rgb(72,61,139)">
+         <pre><code>
 
 import requests
 import json
 
-data = [{"component":"part1", "version":"1"},{"component":"part2", "version":"1"}]
+data = [{"component":"org.eclipse.jdt.junit","version":"3.7.100.v20120523-1543"},{ "component":"org.eclipse.rcp","version":"4.3.0.v20130318-0959"}]
 
 r = requests.post("<SCRIPT LANGUAGE="JavaScript">document.write(location.href)</SCRIPT>", data=json.dumps(data))
 print r.json()
-        </font></code></pre>
+        </code></pre>
         </div>
     </body>
 </html>
