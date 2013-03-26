@@ -54,12 +54,12 @@ class VersionsController extends AppController{
 		$results = array();
 		foreach($JSON as $obj){
 			$id = $obj['component'];
-			$version = $obj['version'];
-			# will try to implement this later, giving strange problems right now
-			#$row =  $this->Version->find('first', array('conditions' => array('Version.id' => $id)));
+			#$version = $obj['version'];
+			$found = false;
 			$rows =  $this->Version->find('all');
  			foreach($rows as $entry){
  				if(strcmp($entry['Version']['project'],$id)==0){
+ 					$found = true;
  					#part up to date
 					#if (strcmp($row['p2_version'],$id)==0){
 					#	$results=array("component"=> $obj['name'],
@@ -86,6 +86,11 @@ class VersionsController extends AppController{
 											);
 					}
 				}
+			}
+			if (!$found){
+				$results[]=array( "component"=> $id,
+											"state"=>"unavailable"
+											);   
 			}
 		}
 		return $results;
