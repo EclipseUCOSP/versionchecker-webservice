@@ -50,32 +50,68 @@ class VersionsController extends AppController{
 	#}
 
 
-	public function versionchecker($JSON){
+public function versionchecker($JSON){
 		$results = array();
 		foreach($JSON as $obj){
 			$id = $obj['component'];
 			# find all of the components in the database which match the id of the component
 			$rows =  $this->Version->find('all', array('conditions' => array('Version.project' => $id)));
+			$size = sizeof($rows);
 			# set the default state to alternative
 			$state = 'alternative';
-			if (sizeof($rows)==1){
+			if ($size==1){
 				# a state can only be available if a version for the component is given in the json
 				if(array_key_exists('version', $obj)) {
 					if (strcmp($obj['version'],$rows[0]['Version']['p2_version'])==0){
 						$state = 'available';
 					}
+				}else{
+					$state = 'available';
 				}
-			}
- 			foreach ($rows as $entry){
  				$results[]=array("component"=> $id,
 						       	"state" => $state,
-								"version"=> $entry['Version']['p2_version'],
+								"version"=> $rows[0]['Version']['p2_version'],
 								"repoinfo"=> array(
-													"repo" => $entry['Version']['git_repo'],
-	 												"commit" => $entry['Version']['git_commit'],
-													"branch" => $entry['Version']['git_branch']
+													"repo" => $rows[0]['Version']['git_repo'],
+	 												"commit" => $rows[0]['Version']['git_commit'],
+													"branch" => $rows[0]['Version']['git_branch']
 													)	
 										);	
+
+
+
+
+			}elseif($size>1){
+				$isAvailable = false;
+				if(array_key_exists('version', $obj)) {
+					foreach ($rows as $entry){
+						if (strcmp($obj['version'],$entry['Version']['p2_version'])==0){
+							$isAvailable = true;
+							$results[]=array("component"=> $id,
+						     			  	"state" => 'available',
+											"version"=> $entry['Version']['p2_version'],
+											"repoinfo"=> array(
+															"repo" => $entry['Version']['git_repo'],
+	 														"commit" => $entry['Version']['git_commit'],
+															"branch" => $entry['Version']['git_branch']
+													)	
+										);	
+						}
+					}
+				}
+				if(!$isAvailable){
+ 					foreach ($rows as $entry){
+ 						$results[]=array("component"=> $id,
+						       			"state" => 'alternative',
+										"version"=> $entry['Version']['p2_version'],
+										"repoinfo"=> array(
+															"repo" => $entry['Version']['git_repo'],
+	 														"commit" => $entry['Version']['git_commit'],
+															"branch" => $entry['Version']['git_branch']
+													)	
+										);	
+ 					}
+ 				}
 			}
 		}
 		return $results;
