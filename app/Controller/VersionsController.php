@@ -49,48 +49,33 @@ class VersionsController extends AppController{
 			
 	#}
 
-	public function versionchecker($JSON){
 
+	public function versionchecker($JSON){
 		$results = array();
 		foreach($JSON as $obj){
 			$id = $obj['component'];
-			#$version = $obj['version'];
-			$found = false;
-			$rows =  $this->Version->find('all');
- 			foreach($rows as $entry){
- 				if(strcmp($entry['Version']['project'],$id)==0){
- 					$found = true;
- 					#part up to date
-					#if (strcmp($row['p2_version'],$id)==0){
-					#	$results=array("component"=> $obj['name'],
-					#					"current"=> true
-					#					);
-					#}else{ 
-						# not up to date
-						#component is unavailable
-						if (strcmp($entry['Version']['state'],"unavailable")==0){
-							$results[]=array( "component"=> $id,
-											"state"=>"unavailable"
-											);   
-						}else{
-							#component is available or has alternative source
-							# LTS support not implemented
-							$results[]=array("component"=> $id,
-						       				"state" => $entry['Version']['state'],
-						       				"version"=> $entry['Version']['p2_version'],
-											"repoinfo"=> array(
-														"repo" => $entry['Version']['git_repo'],
-	 													"commit" => $entry['Version']['git_commit'],
-														"branch" => $entry['Version']['git_branch']
-															)	
-											);
+			# find all of the components in the database which match the id of the component
+			$rows =  $this->Version->find('all', array('conditions' => array('Version.project' => $id)));
+			# set the default state to alternative
+			$state = 'alternative';
+			if (sizeof($rows)==1){
+				# a state can only be available if a version for the component is given in the json
+				if(array_key_exists('version', $obj)) {
+					if (strcmp($obj['version'],$rows[0]['Version']['p2_version'])==0){
+						$state = 'available';
 					}
 				}
 			}
-			if (!$found){
-				$results[]=array( "component"=> $id,
-											"state"=>"unavailable"
-											);   
+ 			foreach ($rows as $entry){
+ 				$results[]=array("component"=> $id,
+						       	"state" => $state,
+								"version"=> $entry['Version']['p2_version'],
+								"repoinfo"=> array(
+													"repo" => $entry['Version']['git_repo'],
+	 												"commit" => $entry['Version']['git_commit'],
+													"branch" => $entry['Version']['git_branch']
+													)	
+										);	
 			}
 		}
 		return $results;
@@ -98,4 +83,5 @@ class VersionsController extends AppController{
 
 
 }
+
 ?>
