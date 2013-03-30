@@ -100,17 +100,22 @@ public function versionchecker($JSON){
 					}
 				}
 				if(!$isAvailable){
+					$latestVersion = $rows[0]['Version']['p2_version'];
  					foreach ($rows as $entry){
- 						$results[]=array("component"=> $id,
+ 						if ($entry['Version']['p2_version'] >= $latestVersion) {
+							$latestVersion = $entry['Version']['p2_version'];
+						}
+ 					}
+
+ 					$results[]=array("component"=> $id,
 						       			"state" => 'alternative',
-										"version"=> $entry['Version']['p2_version'],
+										"version"=> $latestVersion,
 										"repoinfo"=> array(
 															"repo" => $entry['Version']['git_repo'],
 	 														"commit" => $entry['Version']['git_commit'],
 															"branch" => $entry['Version']['git_branch']
 													)	
 										);	
- 					}
  				}
 			}
 		}
