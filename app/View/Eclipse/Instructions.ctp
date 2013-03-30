@@ -37,8 +37,7 @@
     "version":"3.7.100.v20120523-1543"
     },
     {
-    "component":"org.eclipse.rcp",
-    "version":"4.3.0.v20130318-0959"
+    "component":"org.eclipse.rcp"
     }
 }
 
@@ -46,7 +45,7 @@
         
         <h3>
             
-            Python script for testing:
+            Python Script for Testing:
             
         </h3>
 
@@ -64,6 +63,23 @@ data = [{"component":"org.eclipse.jdt.junit","version":"3.7.100.v20120523-1543"}
 r = requests.post("<SCRIPT LANGUAGE="JavaScript">document.write(location.href)</SCRIPT>", data=json.dumps(data))
 print r.json()
         </code></pre>
+
+        <h4>
+            The Possible Results of JSON response:
+        </h4>
+        <p>
+            There are different states for the returned results:
+            <ul>
+            <li>Unavailable</li>
+            <p>This is means that there is no entry for the requested component, the returned response is an empty json object {}.</p>
+            <li>Available</li>
+            <p>If one entry is found on the database. </p>
+
+            <li>Alternative</li>
+            <p>If more than one entry is found on the database with different version components, the returned json will be the latest build. </p>
+            </ul>
+            
+        </p>
         </div>
     </body>
 </html>
