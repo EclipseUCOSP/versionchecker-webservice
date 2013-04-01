@@ -13,8 +13,8 @@ class VersionsController extends AppController{
 
 	public function recievePOST(){
 		if ($this->request->isPost()){
-			#$array = array();
 			$JSON = $this->request->input('json_decode',true);
+
 			# Cleaning the data and makes a string SQL-safe before sending to versioncheck() function
 			# Method 1: using Sanitize::escape() to only escape SQL injections
 			// foreach( $JSON as $obj ){
@@ -100,14 +100,31 @@ public function versionchecker($JSON){
 					}
 				}
 				if(!$isAvailable){
-					$latestVersion = $rows[0]['Version']['p2_version'];
- 					foreach ($rows as $entry){
- 						if ($entry['Version']['p2_version'] >= $latestVersion) {
-							$latestVersion = $entry['Version']['p2_version'];
-						}
- 					}
 
- 					$results[]=array("component"=> $id,
+					if(!array_key_exists('version', $obj)) {
+						foreach ($rows as $entry){
+							$results[]=array("component"=> $id,
+						       			"state" => 'alternative',
+										"version"=> $entry['Version']['p2_version'],
+										"repoinfo"=> array(
+															"repo" => $entry['Version']['git_repo'],
+	 														"commit" => $entry['Version']['git_commit'],
+															"branch" => $entry['Version']['git_branch']
+													)	
+										);
+						}
+
+					}
+					else
+					{
+						$latestVersion = $rows[0]['Version']['p2_version'];
+ 						foreach ($rows as $entry){
+ 							if ($entry['Version']['p2_version'] >= $latestVersion) {
+								$latestVersion = $entry['Version']['p2_version'];
+							}
+ 						}
+
+ 						$results[]=array("component"=> $id,
 						       			"state" => 'alternative',
 										"version"=> $latestVersion,
 										"repoinfo"=> array(
@@ -115,7 +132,8 @@ public function versionchecker($JSON){
 	 														"commit" => $entry['Version']['git_commit'],
 															"branch" => $entry['Version']['git_branch']
 													)	
-										);	
+										);
+					}	
  				}
 			}
 		}
