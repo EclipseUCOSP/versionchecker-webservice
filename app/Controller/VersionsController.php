@@ -43,7 +43,7 @@ class VersionsController extends AppController{
 		}else{
 			
 			$this->autoLayout = false;
-			$this->render('/Eclipse/Instruction');
+			$this->render('/Eclipse/Instructions');
 			}
 		}
 			
