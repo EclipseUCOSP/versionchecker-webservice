@@ -82,8 +82,23 @@ public function versionchecker($JSON){
 
 			}elseif($size>1){
 				if(array_key_exists('version', $obj)) {
+					$isAvailable = false;
 					foreach ($rows as $entry){
-						
+						if (strcmp($obj['version'],$entry['Version']['p2_version'])==0){
+							$results[]=array("component"=> $id,
+						     			  	"state" => 'available',
+											"version"=> $entry['Version']['p2_version'],
+											"repoinfo"=> array(
+															"repo" => $entry['Version']['git_repo'],
+	 														"commit" => $entry['Version']['git_commit'],
+															"branch" => $entry['Version']['git_branch']
+													)	
+										);	
+							$isAvailable = true;
+						}
+					}
+					if (!$isAvailable){
+						foreach ($rows as $entry){
 							$results[]=array("component"=> $id,
 						     			  	"state" => 'alternative',
 											"version"=> $entry['Version']['p2_version'],
@@ -94,9 +109,9 @@ public function versionchecker($JSON){
 													)	
 										);	
 						
+						}
 					}
-				}
-				else{
+				}else{
 						$latestVersion = $rows[0]['Version']['p2_version'];
  						foreach ($rows as $entry){
  							if ($entry['Version']['p2_version'] >= $latestVersion) {
@@ -105,7 +120,7 @@ public function versionchecker($JSON){
  						}
 
  						$results[]=array("component"=> $id,
-						       			"state" => 'alternative',
+						       			"state" => 'available',
 										"version"=> $latestVersion,
 										"repoinfo"=> array(
 															"repo" => $entry['Version']['git_repo'],
@@ -124,3 +139,4 @@ public function versionchecker($JSON){
 }
 
 ?>
+
