@@ -1,41 +1,228 @@
 Version-Checker Webservice
 =======
 
-This is the repo for the Version-Checker Webservice. It is to be used in conjuction with the [Version-Checker Eclipse Plugin](https://github.com/EclipseUCOSP/org.eclipse.cbi.versionchecker). The goal of the Version Checker is to have the ability to quickly find and downloads the most up-to-date version, of the various components in an Eclipse build. WHen the plugin sends a JSON request to the webservice, the webservice parses the JSON and extracts the approproate information from the Eclipse CBI database and returns them to the plugin.
+This is the repo for the Version-Checker Webservice. It is to be used in conjuction with the [Version-Checker Eclipse Plugin](https://github.com/EclipseUCOSP/org.eclipse.cbi.versionchecker). The goal of the Version Checker is to have the ability to quickly find and downloads the most up-to-date version, of the various components in an Eclipse build. When the plugin sends a JSON request to the webservice, the webservice parses the JSON and extracts the approproate information from the Eclipse CBI database and returns them to the plugin.
 
-The webservice will return JSON with the form:
- ```JSON
-{
-      {
-      "component":"com.example",
-      "state":"available",
-      "version":"123",
-      "repoinfo":{
-            "repo":"https://github.com/EclipseUCOSP/org.eclipse.cbi.versionchecker",
-            "commit":"7c1b9502ff7f5204030ec046283b525c428be530",
-            "branch":"master"
-            }
-      }
-}
-
- ``` 
+The version checker is currently running [on the Eclipse servers](http://build.eclipse.org/cbi/vc/)
 
 
 The webservice will interpret JSON with the form:
- ```JSON
+```JSON
 {
-    {
     "component":"org.eclipse.jdt.junit",
     "version":"3.7.100.v20120523-1543"
-    },
+} 
+```
+and
+```JSON
+{
+    "component":"org.junit",    
+}
+``` 
+
+Each object passed into the webservice on a POST request will illicit a response object. Each response object will contain: the component, the version, it's state (more info below), the repository utl, the commit for that version, and the repository branch. The response object can have one of 3 states: available, unavailable, and alternative. There are different factors which determine the state of a response. They are: the type of JSON passed it(with or without a version), the number of matching entries for the component in the database, and the presence of a matching database entry version. Here is a break down of possible states grouped by the number of entries found in the database.
+
+A Single Matching Entry in the Database is Found
+-------------
+
+**Case 1: Matching version numbers**
+
+
+**Input:**
+```JSON
+{
+    "component": "org.eclipse.pde.api.tools",
+    "version":"1.0.500.v20130225-1820"
+}
+```
+
+If there entry in the database for this component whose matches the JSON then we will get a response in the 'available' state as shown below
+
+**Output:**
+
+```JSON
+{
+    'repoinfo': {'repo': '/gitroot/platform/eclipse.platform.releng.aggregator.git',
+                 'commit': '0b7139aef0ec26a536ab1557fa2c153c30abda42', 
+                 'branch': 'master'
+                 }, 
+    'state': 'available',
+    'version': '1.0.500.v20130225-1820', 
+    'component': 'org.eclipse.pde.api.tools'
+}
+```
+
+**Case 2: Different Version Numbers**
+
+**Input:**
+```JSON
+{
+    "component": "org.eclipse.pde.api.tools",
+    "version":"0.0.0.0.0.0.test"
+}
+```
+If there is only a single matching entry in the database for the requested component, and the versions do not match, then the entry will be returned in the 'alternative' state.
+
+**Output:**
+
+```JSON
+{
+    'repoinfo': {'repo': '/gitroot/platform/eclipse.platform.releng.aggregator.git',
+                 'commit': '0b7139aef0ec26a536ab1557fa2c153c30abda42', 
+                 'branch': 'master'
+                 }, 
+    'state': 'alternative',
+    'version': '1.0.500.v20130225-1820', 
+    'component': 'org.eclipse.pde.api.tools'
+}
+```
+
+**Case 3: No Version Number in input**
+
+**Input:**
+
+```JSON
+{
+    "component": "org.eclipse.pde.api.tools"
+}
+```
+
+
+If There is no version specified in the JSON request, then the returned object will be in an available state.
+
+**Output:**
+```JSON
+{
+    'repoinfo': {'repo': '/gitroot/platform/eclipse.platform.releng.aggregator.git',
+                 'commit': '0b7139aef0ec26a536ab1557fa2c153c30abda42', 
+                 'branch': 'master'
+                 }, 
+    'state': 'available',
+    'version': '1.0.500.v20130225-1820', 
+    'component': 'org.eclipse.pde.api.tools'
+}
+```
+
+
+
+Multiple Entries are Found in the Database
+---------------
+
+**Case 1: One of the entries found matches the version in the request**
+
+**Input:**
+```JSON
+{
+    "component": "org.eclipse.pde",
+    "version":"3.9.0.v20130318-0959"
+}
+```
+
+If there are multiple entries for a component, and one of them has the same version as the requested version, return only that entry as 'available'
+
+**Output:**
+
+```JSON
+{
+    'repoinfo': {'repo': '/gitroot/platform/eclipse.platform.releng.aggregator.git', 
+                 'commit': '0b7139aef0ec26a536ab1557fa2c153c30abda42', 
+                 'branch': 'master'
+                 }, 
+    'state': 'available', 
+    'version': '3.9.0.v20130318-0959', 
+    'component': 'org.eclipse.pde'
+}
+```
+
+**Case 2: No entries match the version**
+
+**Input:**
+```JSON
+{
+    "component": "org.eclipse.pde",
+    "version":"3.9.0.v20130318-0959"
+}
+```
+
+If there are multiple entries in the database for the component, but none of them have a mactching version, all the entries will be returned in the 'alternative' state.
+
+**Output:**
+```JSON
+{
     {
-    "component":"org.junit",
-    "version":"3.8.2.v3_8_2_v20120427-1100"
+    'repoinfo': {'repo': '/gitroot/platform/eclipse.platform.releng.aggregator.git', 
+                 'commit': '0b7139aef0ec26a536ab1557fa2c153c30abda42', 
+                 'branch': 'master'
+                 }, 
+    'state': 'alternative', 
+    'version': '3.9.0.v20130318-0959', 
+    'component': 'org.eclipse.pde'
+    },
+    'repoinfo': {'repo': '/gitroot/platform/eclipse.platform.releng.aggregator.git', 
+                 'commit': '0b7139aef0ec26a536ab1557fa2c153c30abda42', 
+                 'branch': 'master'
+                 }, 
+    'state': 'alternative', 
+    'version': '3.8.100.v20130318-0959', 
+    'component': 'org.eclipse.pde'
     }
 }
- ``` 
+```
 
-The version checker is currently running [on the Eclipse servers](http://build.eclipse.org/cbi/vc/)
+
+
+**Case 3: No Version Number in input**
+
+**Input:**
+```JSON
+{
+    "component": "org.eclipse.pde"
+}
+```
+
+If no version number is passed in with the object in the request, then the webservice will send ONLY the lastest version of the component back in the 'available' state.
+
+**Output:**
+```JSON
+{
+    'repoinfo': {'repo': '/gitroot/platform/eclipse.platform.releng.aggregator.git', 
+                 'commit': '0b7139aef0ec26a536ab1557fa2c153c30abda42', 
+                 'branch': 'master'
+                 }, 
+    'state': 'available', 
+    'version': '3.9.0.v20130318-0959', 
+    'component': 'org.eclipse.pde'
+}
+```
+
+No Entries are Found
+------------------
+
+Thie is by far the most simple one, if no entries are found the state is simply unavailable, but it is handled in the plugin, on the client side. It is the same for both types of requests.
+
+**Input:**
+
+```JSON
+{
+    {
+    "component":"im.not.a.real.component",
+    "version":"1.2.3.4.5.6.7.8.9"
+    }
+} 
+```
+or
+```JSON
+{
+    {
+    "component":"im.not.a.real.component"   
+    }
+}
+``` 
+
+Both of these request will not yield a response, and will be seen as unavailable by the client.
+
+
+
 
 Quick Installation
 ----------------
