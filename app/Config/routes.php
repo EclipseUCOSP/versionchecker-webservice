@@ -25,8 +25,9 @@
  
 	Router::connect('/', array('controller' => 'versions', 'action' => 'recievePOST'));
 
-	#Router::connect('/eclipse/*', array('controller' => 'eclipse', 'action' => 'queryy'));
-
+	#Defining another route to respond to requets with the contoller that is defined with
+	#CakePHP utility functions
+	#Router::connect('/', array('controller' => 'requests', 'action' => 'recievePOST'));
 
 
 /**
@@ -35,6 +36,8 @@
  */
 	CakePlugin::routes();
     Router::mapResources('maven_p2');
+    # For accepting JSON data with request handler
+	Router::parseExtensions('json');
 /**
  * Load the CakePHP default routes. Only remove this if you do not want to use
  * the built-in default routes.
