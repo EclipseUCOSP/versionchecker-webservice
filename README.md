@@ -231,16 +231,16 @@ Quick Installation
 
 -Apache2 webserver:
 ```
-    <sudo apt-get install apache2>
+    sudo apt-get install apache2
 ```
 -PHP5:
 ```
-    <sudo apt-get install libapache2-mod-php5 php5-mysql cakephp>
-    <sudo a2enmod rewrite>
+    sudo apt-get install libapache2-mod-php5 php5-mysql cakephp
+    sudo a2enmod rewrite
 ```
 -MySQL server:
 ```
-    <sudo apt-get install mysql-server>
+    sudo apt-get install mysql-server
 ```
 
 In general all these three packages are included in a LAMP (Linux-Apache-MySQL-PHP) package in Ubuntu.
