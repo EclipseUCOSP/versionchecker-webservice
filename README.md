@@ -230,12 +230,18 @@ Quick Installation
 *Requirements*
 
 -Apache2 webserver:
+```
     <sudo apt-get install apache2>
+```
 -PHP5:
+```
     <sudo apt-get install libapache2-mod-php5 php5-mysql cakephp>
     <sudo a2enmod rewrite>
--MySQL server: 
+```
+-MySQL server:
+```
     <sudo apt-get install mysql-server>
+```
 
 In general all these three packages are included in a LAMP (Linux-Apache-MySQL-PHP) package in Ubuntu.
 
@@ -266,6 +272,7 @@ To alias this directory to the URL, edit /etc/apache2/sites-enabled/000-default 
     </Directory>
 
 Restart the Apache server so it recognizes the config changes:
+
     <sudo /etc/init.d/apache2 restart>
 
 For more settings on Apache server please see [this](https://help.ubuntu.com/10.04/serverguide/httpd.html).
